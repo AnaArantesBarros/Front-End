@@ -1,0 +1,69 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    
+    <title>Lendo geojson</title>
+</head>
+<style>
+    #map { height: 480px };
+    .leaflet-popup-content { /*Precisa estar lendo o arquivo do letlet localmente */
+        width: 900px !important;
+    }
+</style>
+<body>
+    <div id="map"></div>
+</body>
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+crossorigin=""></script>
+<script src="point-exemple.js"></script>
+<script src="polygon-exemple.js"></script>  
+<script>
+    var map = L.map('map').setView([-18.6845819687874,-43.86735275387764], 20);
+
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+
+    osm.addTo(map);
+
+    var area1Layer = L.geoJSON(area1, {
+        onEachFeature: function(feature, layer){
+            area = turf.area(feature).toFixed(2);
+            center_lat = turf.center(feature).geometry.coordinates[1].toFixed(4);
+            center_lon = turf.center(feature).geometry.coordinates[0].toFixed(4);
+            bbox = turf.bbox(feature).toString(); 
+
+            layer.bindPopup(`<b>Area:</b> ${area} <br> <b>Centroid (x,y):</b> (${center_lat} , ${center_lon})<br> <b>Bbox:</b> ${bbox}`) // metro quadrado
+            console.log(bbox)
+        }
+    });
+    var area1PointsLayer = L.geoJSON(area1Points);
+
+    area1Layer.addTo(map);
+    area1PointsLayer.addTo(map);
+
+    baseLayer = {
+        "OSM" : osm
+    };
+
+    otherLayers = {
+        "Minha area": area1Layer,
+        "Vertices": area1PointsLayer
+    };
+
+    L.control.layers(baseLayer,otherLayers, {collapse:false}).addTo(map);
+</script>
+
+
+</html>
