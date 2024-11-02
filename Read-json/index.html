@@ -1,0 +1,35 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div></div>
+</body>
+<script>
+    // De uma JSON string para um objeto JSON
+    const meJson = `{
+        "name": "Ana",
+        "is_tired": true,
+        "enjoy_watching": "Star Trek",
+        "favorite_color": "Red"
+
+    }`;
+
+    const me = JSON.parse(meJson);
+
+    console.log(me);
+
+    // Cria uma JSON string de um objeto
+    // Pode ser uma lista, dicionario etc.
+    const cake = {
+        flavor: "strawberry",
+        frosting: "vanilla"
+    };
+
+    const cakeJson = JSON.stringify(cake);
+
+    console.log(cakeJson);
+</script>
+</html>
