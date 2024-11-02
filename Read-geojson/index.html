@@ -11,7 +11,7 @@
     <title>Lendo geojson</title>
 </head>
 <style>
-    #map { height: 480px };
+    #map { height: 480px; };
     .leaflet-popup-content { /*Precisa estar lendo o arquivo do letlet localmente */
         width: 900px !important;
     }
@@ -28,7 +28,7 @@ crossorigin=""></script>
 <script src="point-exemple.js"></script>
 <script src="polygon-exemple.js"></script>  
 <script>
-    var map = L.map('map').setView([-18.6845819687874,-43.86735275387764], 20);
+    var map = L.map('map').setView([-18.6845819687874,-43.86735275387764], 20); // Lat e Lon
 
     var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -63,6 +63,18 @@ crossorigin=""></script>
     };
 
     L.control.layers(baseLayer,otherLayers, {collapse:false}).addTo(map);
+
+    // Criando geojson com Turf 
+    //var point = turf.point([-43.8672, -18.6846]); // caso nao funcione use .geometry
+    //L.geoJSON(point).addTo(map);
+
+    // Multipoint nao funciona
+    var points = turf.multipoint([[-43.8672, -18.6846],[-44.9672, -18.9846]]); // caso nao funcione use .geometry
+    L.geoJSON(points).addTo(map);
+    // Adicionar ponto como marcador
+    //var myMarker = L.marker([-18.6846, -43.8672]).addTo(map);
+
+
 </script>
 
 
