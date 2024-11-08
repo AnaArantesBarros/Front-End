@@ -44,14 +44,33 @@
     CartoDB_DarkMatter.addTo(map);
     var myIcon = L.icon({
         iconUrl: 'circle-fill.png',
-        iconSize: [5, 5],
+        iconSize: [2, 2],
         iconAnchor: [2, 3],
         popupAnchor: [-3, -76],
     });
-    var geojsonLayer = new L.GeoJSON.AJAX('Usinas_Hidreletricas_UHE.geojson', {pointToLayer:
-      function(feature, latlng) {
+    
+    var myIcon2 = L.icon({
+        iconUrl: 'circle.png',
+        iconSize: [2, 2],
+        iconAnchor: [2, 3],
+        popupAnchor: [-3, -76],
+    });
+
+    // Usinas Hidroeletricas BR
+    var geojsonLayer = new L.GeoJSON.AJAX('geojson/Usinas_Hidreletricas_UHE.geojson', {pointToLayer:
+        // Dados da https://metadados.snirh.gov.br/geonetwork/srv/api/records/56ac7cb5-aa22-4081-a135-c7fc0938a449
+        function(feature, latlng) {
       var str = "oi"
       return L.marker(latlng, {icon: myIcon}).bindPopup(str);
+    }});
+    geojsonLayer.addTo(map);
+
+    // Centrais geradoras
+    var geojsonLayer = new L.GeoJSON.AJAX('geojson/Centrais_Geradoras_Hidreletricas_CGH.geojson', {pointToLayer:
+        // Dados da https://metadados.snirh.gov.br/geonetwork/srv/api/records/56ac7cb5-aa22-4081-a135-c7fc0938a449
+        function(feature, latlng) {
+      var str = "oi"
+      return L.marker(latlng, {icon: myIcon2}).bindPopup(str);
     }});
     geojsonLayer.addTo(map);
 
