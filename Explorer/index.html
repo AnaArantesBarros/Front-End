@@ -4,9 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
+    <link rel="stylesheet" href="src/leaflet.css"/>
      <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -17,10 +15,13 @@
     <title>Teste</title>
 </head>
 <style>
-    #map { height: 480px; };
+    #map { height: 99vh; };
     .leaflet-popup-content { /*Precisa estar lendo o arquivo do letlet localmente */
         width: 900px !important;
-    }
+    };
+    .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+        background-color: #000
+    };
 </style>
 <body>
     <div id="map"></div>
@@ -36,7 +37,7 @@
     const map = L.map('map').setView([-18.6845819687874,-43.86735275387764], 5); // Lat e Lon
 
     const CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-	attribution: false,
+	attribution: 'Dados da <a href="https://metadados.snirh.gov.br/geonetwork/srv/api/records/56ac7cb5-aa22-4081-a135-c7fc0938a449">Agência Nacional de Águas e Saneamento Básico</a>',
 	subdomains: 'abcd',
 	maxZoom: 20
     });
@@ -44,24 +45,24 @@
     CartoDB_DarkMatter.addTo(map);
     var myIcon = L.icon({
         iconUrl: 'circle-fill.png',
-        iconSize: [2, 2],
+        iconSize: [4, 4],
         iconAnchor: [2, 3],
-        popupAnchor: [-3, -76],
+        popupAnchor: [0, -3],
     });
     
     var myIcon2 = L.icon({
         iconUrl: 'circle.png',
-        iconSize: [2, 2],
+        iconSize: [4, 4],
         iconAnchor: [2, 3],
-        popupAnchor: [-3, -76],
+        popupAnchor: [0, -3],
     });
 
     // Usinas Hidroeletricas BR
     var geojsonLayer = new L.GeoJSON.AJAX('geojson/Usinas_Hidreletricas_UHE.geojson', {pointToLayer:
         // Dados da https://metadados.snirh.gov.br/geonetwork/srv/api/records/56ac7cb5-aa22-4081-a135-c7fc0938a449
         function(feature, latlng) {
-      var str = "oi"
-      return L.marker(latlng, {icon: myIcon}).bindPopup(str);
+            var str = `Usina Hidroeletrica de ${feature.properties.NOME}`
+            return L.marker(latlng, {icon: myIcon}).bindPopup(str);
     }});
     geojsonLayer.addTo(map);
 
@@ -69,8 +70,8 @@
     var geojsonLayer = new L.GeoJSON.AJAX('geojson/Centrais_Geradoras_Hidreletricas_CGH.geojson', {pointToLayer:
         // Dados da https://metadados.snirh.gov.br/geonetwork/srv/api/records/56ac7cb5-aa22-4081-a135-c7fc0938a449
         function(feature, latlng) {
-      var str = "oi"
-      return L.marker(latlng, {icon: myIcon2}).bindPopup(str);
+            var str = `Central geradora de ${feature.properties.NOME}`
+            return L.marker(latlng, {icon: myIcon2}).bindPopup(str);
     }});
     geojsonLayer.addTo(map);
 
