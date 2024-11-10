@@ -34,7 +34,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
 
 <script>
-    const map = L.map('map').setView([-18.6845819687874,-43.86735275387764], 5); // Lat e Lon
+    const map = L.map('map').setView([-14.0833,-47.6667], 5); // Lat e Lon
 
     const CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 	attribution: 'Dados da <a href="https://metadados.snirh.gov.br/geonetwork/srv/api/records/56ac7cb5-aa22-4081-a135-c7fc0938a449">Agência Nacional de Águas e Saneamento Básico</a>',
@@ -58,22 +58,36 @@
     });
 
     // Usinas Hidroeletricas BR
-    var geojsonLayer = new L.GeoJSON.AJAX('geojson/Usinas_Hidreletricas_UHE.geojson', {pointToLayer:
+    var hidroeletricas = new L.GeoJSON.AJAX('geojson/Usinas_Hidreletricas_UHE.geojson', {pointToLayer:
         // Dados da https://metadados.snirh.gov.br/geonetwork/srv/api/records/56ac7cb5-aa22-4081-a135-c7fc0938a449
         function(feature, latlng) {
             var str = `Usina Hidroeletrica de ${feature.properties.NOME}`
             return L.marker(latlng, {icon: myIcon}).bindPopup(str);
     }});
-    geojsonLayer.addTo(map);
+    hidroeletricas.addTo(map);
 
     // Centrais geradoras
-    var geojsonLayer = new L.GeoJSON.AJAX('geojson/Centrais_Geradoras_Hidreletricas_CGH.geojson', {pointToLayer:
+    var centrais = new L.GeoJSON.AJAX('geojson/Centrais_Geradoras_Hidreletricas_CGH.geojson', {pointToLayer:
         // Dados da https://metadados.snirh.gov.br/geonetwork/srv/api/records/56ac7cb5-aa22-4081-a135-c7fc0938a449
         function(feature, latlng) {
             var str = `Central geradora de ${feature.properties.NOME}`
             return L.marker(latlng, {icon: myIcon2}).bindPopup(str);
     }});
-    geojsonLayer.addTo(map);
+    centrais.addTo(map);
+
+    // Delimitacao do Brasil
+    var myStyle = {
+        "color": "#ffb938",
+        "fillColor": "transparent",
+        "weight": 2,
+        "opacity": 0.4
+    };
+    var brasil = L.geoJson.ajax('geojson/brazil_geo.json', {
+        // Fonte https://www.kaggle.com/datasets/thiagobodruk/brazil-geojson?resource=download
+        style: myStyle
+    }).addTo(map);
+
+
 
 </script>
 </html>
